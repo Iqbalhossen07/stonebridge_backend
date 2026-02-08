@@ -3,6 +3,43 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 // ১. লগইন কন্ট্রোলার
+// exports.adminLogin = async (req, res) => {
+//     try {
+//         const { email, password } = req.body;
+//         const admin = await Admin.findOne({ email });
+        
+//         if (!admin) {
+//             return res.status(401).json({ success: false, message: "Invalid email or password" });
+//         }
+
+//         const isMatch = await bcrypt.compare(password, admin.password);
+//         if (!isMatch) {
+//             return res.status(401).json({ success: false, message: "Invalid email or password" });
+//         }
+
+//         const token = jwt.sign(
+//             { id: admin._id, role: 'admin' }, 
+//             process.env.JWT_SECRET, 
+//             { expiresIn: '7d' }
+//         );
+
+//         res.cookie('adminToken', token, {
+//             httpOnly: true,
+//             secure: false, // লোকালহোস্টে false
+//             sameSite: 'Lax',
+//             maxAge: 7 * 24 * 60 * 60 * 1000
+//         });
+
+//         res.status(200).json({ 
+//             success: true, 
+//             message: `Welcome Back, ${admin.name}!`,
+//             admin: { name: admin.name, image: admin.image }
+//         });
+//     } catch (error) {
+//         res.status(500).json({ success: false, error: error.message });
+//     }
+// };
+
 exports.adminLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -23,10 +60,11 @@ exports.adminLogin = async (req, res) => {
             { expiresIn: '7d' }
         );
 
+        // লাইভ সার্ভারের জন্য কুকি সেটিংস আপডেট করা হলো
         res.cookie('adminToken', token, {
             httpOnly: true,
-            secure: false, // লোকালহোস্টে false
-            sameSite: 'Lax',
+            secure: true,      // লাইভ সার্ভারে অবশ্যই true হতে হবে (HTTPS এর জন্য)
+            sameSite: 'none',   // এক ডোমেইন থেকে অন্য ডোমেইনে কুকি পাঠানোর জন্য 'none' জরুরি
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
