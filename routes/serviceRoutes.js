@@ -16,5 +16,6 @@ router.delete('/sub-service/delete/:id', serviceController.deleteSubService);
 router.get('/sub-service/single/:id', serviceController.getSingleSubService);
 // অবশ্যই PUT মেথড ব্যবহার করবেন এবং পাথটি ফ্রন্টএন্ডের সাথে মিলাবেন
 router.put('/sub-service/update/:id', upload.single('image'), serviceController.updateSubService);
+router.get('/sub-services', serviceController.getOnlySubServices);
 
 module.exports = router;

@@ -9,7 +9,12 @@ const videoRoutes = require('./routes/videoRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const testimonialRoutes = require('./routes/testimonialRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
-const authRoutes = require('./routes/authRoutes'); // ২. লগইন রাউট ইমপোর্ট করুন
+const authRoutes = require('./routes/authRoutes'); 
+const timeSlotRoutes = require('./routes/timeSlotRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+const contactRoutes = require('./routes/contactRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+
 
 require('dotenv').config();
 
@@ -41,7 +46,13 @@ app.use('/api', videoRoutes);
 app.use('/api', blogRoutes);
 app.use('/api', testimonialRoutes);
 app.use('/api', serviceRoutes);
-app.use('/api/admin', authRoutes); // ৫. লগইন রাউট ইন্টিগ্রেশন
+app.use('/api/admin', authRoutes); 
+app.use('/api/time-slots', timeSlotRoutes);
+app.use('/api/appointment', serviceRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/admin', adminRoutes);
+
 
 app.get('/', (res, req) => {
     res.send('Stonebridge API is running with MVC Architecture...');

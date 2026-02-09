@@ -61,10 +61,16 @@ exports.adminLogin = async (req, res) => {
         );
 
         // লাইভ সার্ভারের জন্য কুকি সেটিংস আপডেট করা হলো
+        // res.cookie('adminToken', token, {
+        //     httpOnly: true,
+        //     secure: true,      // লাইভ সার্ভারে অবশ্যই true হতে হবে (HTTPS এর জন্য)
+        //     sameSite: 'none',   // এক ডোমেইন থেকে অন্য ডোমেইনে কুকি পাঠানোর জন্য 'none' জরুরি
+        //     maxAge: 7 * 24 * 60 * 60 * 1000
+        // });
         res.cookie('adminToken', token, {
             httpOnly: true,
-            secure: true,      // লাইভ সার্ভারে অবশ্যই true হতে হবে (HTTPS এর জন্য)
-            sameSite: 'none',   // এক ডোমেইন থেকে অন্য ডোমেইনে কুকি পাঠানোর জন্য 'none' জরুরি
+            secure: process.env.NODE_ENV === "production", // প্রোডাকশনে true, লোকালহোস্টে false
+            sameSite: process.env.NODE_ENV === "production" ? 'none' : 'Lax', // প্রোডাকশনে none, লোকালে Lax
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 

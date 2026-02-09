@@ -123,3 +123,23 @@ exports.updateSubService = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 };
+
+
+
+
+exports.getOnlySubServices = async (req, res) => {
+    try {
+        // আপনার মডেলে ফিল্ডের নাম 'title', তাই এখানে 'title' সিলেক্ট করতে হবে
+        const subServices = await SubService.find().select('title');
+        
+        // ফ্রন্টএন্ডে যেন ঝামেলা না হয়, তাই আমরা ম্যাপ করে পাঠাতে পারি
+        const formattedData = subServices.map(item => ({
+            _id: item._id,
+            sub_service_title: item.title // ফ্রন্টএন্ড এই নামটা খুঁজছে
+        }));
+
+        res.status(200).json({ success: true, data: formattedData });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};

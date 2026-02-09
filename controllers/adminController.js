@@ -1,24 +1,43 @@
-exports.getAllStats = async (req, res) => {
-  try {
-    // সবগুলো মডেল থেকে কাউন্ট নেওয়া
-    const [appointments, team, services, blogs, testimonials, gallery] = await Promise.all([
-      Appointment.countDocuments(),
-      Team.countDocuments(),
-      Service.countDocuments(),
-      Blog.countDocuments(),
-      Testimonial.countDocuments(),
-      Gallery.countDocuments()
-    ]);
+const Booking = require('../models/Booking');
+const Team = require('../models/Team');
+const Service = require('../models/Service');
+const Subservice = require('../models/Subservice');
+const Blog = require('../models/Blog');
+const Testimonial = require('../models/Testimonial');
+const Gallery = require('../models/Gallery');
+const TimeSlot = require('../models/TimeSlot');
+const Video = require('../models/Video');
 
-    res.status(200).json({
-      appointments,
-      team,
-      services,
-      blogs,
-      testimonials,
-      gallery
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
+exports.getAllStats = async (req, res) => {
+    try {
+        // ৯টি টেবিলের কাউন্ট একসাথে আনা হচ্ছে
+        const [
+            appointments, team, services, subservices, 
+            blogs, testimonials, gallery, timeslots, videos
+        ] = await Promise.all([
+            Booking.countDocuments(),
+            Team.countDocuments(),
+            Service.countDocuments(),
+            Subservice.countDocuments(),
+            Blog.countDocuments(),
+            Testimonial.countDocuments(),
+            Gallery.countDocuments(),
+            TimeSlot.countDocuments(),
+            Video.countDocuments()
+        ]);
+
+        res.status(200).json({
+            appointments,
+            team,
+            services,
+            subservices,
+            blogs,
+            testimonials,
+            gallery,
+            timeslots,
+            videos
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Stats fetching failed" });
+    }
 };
